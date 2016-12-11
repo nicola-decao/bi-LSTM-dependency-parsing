@@ -68,7 +68,7 @@ class DatasetParser:
                     or self.__stack[-1] != ['0', '<ROOT/>', 'ROOT', '_', '_'])
 
     def next(self, action=None):
-        if not action:
+        if action is None:
             if self.__stack[-1][3] == self.__stack[-2][0] and self.__dependencies[int(self.__stack[-1][0])] == 0:
                 return self.__reduce_right()
             elif self.__stack[-2][3] == self.__stack[-1][0] and self.__dependencies[int(self.__stack[-2][0])] == 0:
@@ -76,18 +76,13 @@ class DatasetParser:
             else:
                 return self.__shift()
         else:
-            action = action.split('-')
-            if len(action) > 1:
-                action = action[0] + '-' + action[1]
-            else:
-                action = action[0]
-
-            if action == 'reduce-right':
-                self.__reduce_right()
-            elif action == 'reduce-left':
-                self.__reduce_left()
-            else:
-                self.__shift()
+            for a in action:
+                if a == 'reduce-right' and len(self.__stack) >= 2:
+                    return self.__reduce_right()
+                elif a == 'reduce-left' and len(self.__stack) >= 2:
+                    return self.__reduce_left()
+                elif self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
+                    return self.__shift()
 
     def get_stack(self):
         return int(self.__stack[-1][0]), int(self.__stack[-2][0])

@@ -35,7 +35,7 @@ def tag2target(tag):
 
 
 def target2tag(target):
-    return np.array(['reduce-left', 'shift', 'reduce-right'])[np.argsort(target[0])]
+    return np.array(['reduce-left', 'shift', 'reduce-right'])[np.argsort(target[0])][::-1]
 
 
 def predict(biLSTM, sentence, word2vec):
@@ -51,9 +51,8 @@ def predict(biLSTM, sentence, word2vec):
 
         target = biLSTM.get_model().predict([s2v, ms1, ms2, mb])
         tag = target2tag(target)
-        tagx = tag + '-unknown' if tag != 'shift' else tag
-        tags.append(tagx)
-        parser.next(tagx)
+        true_tag = parser.next(tag)
+        tags.append(true_tag)
 
     return tags
 
@@ -108,12 +107,13 @@ def training(biLSTM, word2vec, sentences):
 biLSTM = BiLSTM(200, 200)
 biLSTM.get_model().load_weights('BiLSTM.h5f')
 word2vec = DataUtils.load_glove_dict(paths.PATH_GLOVE_FILTERED_TAGGED)
-sentences = DataUtils.conll2lists(paths.PATH_TRAIN_STANFORD_TAGGED)[11600:]
+# sentences = DataUtils.conll2lists(paths.PATH_TRAIN_STANFORD_TAGGED)
 
 # TRAINING
-training(biLSTM, word2vec, sentences)
+# training(biLSTM, word2vec, sentences)
 
 # TESTING
 # predict(biLSTM, sentence, word2vec)
-# test(biLSTM, sentences, word2vec, 'fuck')
+test_sentences = DataUtils.conll2lists(paths.PATH_TEST_STANFORD_TAGGED)[:5]
+test(biLSTM, test_sentences, word2vec, '../data/test-bilstm.conll')
 
