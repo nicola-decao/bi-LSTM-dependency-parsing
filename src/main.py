@@ -1,7 +1,7 @@
-from BiLSTM import BiLSTM #, BiLSTM2
-from data_utils import DataUtils
-from dataset_parser import DatasetParser
-import paths
+from src.BiLSTM import BiLSTM
+from src.data_utils import DataUtils
+from src.dataset_parser import DatasetParser
+import src.paths as paths
 import numpy as np
 import time
 
