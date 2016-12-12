@@ -77,9 +77,11 @@ class DatasetParser:
                 return self.__shift()
         else:
             for a in action:
-                if a == 'reduce-right' and len(self.__stack) >= 2:
+                if a == 'reduce-right' and len(self.__stack) > 2:
                     return self.__reduce_right()
-                elif a == 'reduce-left' and len(self.__stack) >= 2:
+                elif a == 'reduce-right' and self.__buffer[0] == ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
+                    return self.__reduce_right()
+                elif a == 'reduce-left' and len(self.__stack) > 2:
                     return self.__reduce_left()
                 elif self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
                     return self.__shift()

@@ -108,12 +108,13 @@ biLSTM = BiLSTM(200, 200)
 biLSTM.get_model().load_weights('BiLSTM.h5f')
 word2vec = DataUtils.load_glove_dict(paths.PATH_GLOVE_FILTERED_TAGGED)
 # sentences = DataUtils.conll2lists(paths.PATH_TRAIN_STANFORD_TAGGED)
-
+# print(len(sentences))
 # TRAINING
 # training(biLSTM, word2vec, sentences)
 
 # TESTING
 # predict(biLSTM, sentence, word2vec)
-test_sentences = DataUtils.conll2lists(paths.PATH_TEST_STANFORD_TAGGED)[:5]
+test_sentences = DataUtils.conll2lists(paths.PATH_TEST_STANFORD_TAGGED)
+
 test(biLSTM, test_sentences, word2vec, '../data/test-bilstm.conll')
 
