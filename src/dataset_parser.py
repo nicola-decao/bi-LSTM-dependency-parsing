@@ -83,7 +83,7 @@ class DatasetParser:
                     return self.__reduce_right()
                 elif a == 'reduce-left' and len(self.__stack) > 2:
                     return self.__reduce_left()
-                elif self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
+                elif a == 'shift' and self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
                     return self.__shift()
 
     def get_stack(self):

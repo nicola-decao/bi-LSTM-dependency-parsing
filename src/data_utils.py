@@ -36,11 +36,6 @@ class DataUtils:
         pickle.dump(dictionary, out)
         out.close()
 
-    # @staticmethod
-    # def save_filtered_glove_dict(filename):
-    #     dictionary = DataUtils.glove2dict_filtered()
-    #     DataUtils.save_glove_dict(dictionary, filename)
-
     @staticmethod
     def load_glove_dict(filename):
         read = open(filename, 'rb')
@@ -123,3 +118,17 @@ class DataUtils:
                         break
 
         return sentence
+
+    @staticmethod
+    def build_dataset(train_dependency_dataset, test_dependency_dataset, glove_file):
+        train_file = train_dependency_dataset
+        train_file_tagged = paths.PATH_TRAIN_STANFORD_TAGGED
+        test_file = test_dependency_dataset
+        test_file_tagged = paths.PATH_TEST_STANFORD_TAGGED
+
+        DataUtils.replace_numbers(train_file, train_file_tagged)
+        DataUtils.replace_numbers(test_file, test_file_tagged)
+
+        glove = DataUtils.load_glove_dict(glove_file)
+        DataUtils.add_num_glove(glove)
+        DataUtils.save_glove_dict(glove, paths.PATH_GLOVE_FILTERED_TAGGED)
