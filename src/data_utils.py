@@ -2,6 +2,8 @@ import pickle
 import numpy as np
 import re
 
+from src import paths
+
 
 class DataUtils:
 
@@ -77,16 +79,24 @@ class DataUtils:
         return words
 
     @staticmethod
+    def save_corpus(sentences, out_file):
+        with open(out_file, 'w') as f:
+            for i, s in enumerate(sentences):
+                for j, w in enumerate(s):
+                    if i != len(sentences) - 1 or j != len(s) - 1:
+                        f.write('\t'.join(w) + '\n')
+                    else:
+                        f.write('\t'.join(w))
+
+                if i != len(sentences) - 1:
+                    f.write('\n')
+
+    @staticmethod
     def output_format_corpus(sentences, actions, out_file):
         l = []
         for s, a in zip(sentences, actions):
             l.append(DataUtils.output_format(s, a))
-
-        with open(out_file, 'w') as f:
-            for s in l:
-                for w in s:
-                    f.write('\t'.join(w) + '\n')
-                f.write('\n')
+        DataUtils.save_corpus(l, out_file)
 
     @staticmethod
     def output_format(sentence, actions):

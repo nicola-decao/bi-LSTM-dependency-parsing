@@ -32,7 +32,7 @@ class BiLSTM:
         return self.__model
 
 
-class slave_BiLSTM:
+class SlaveBiLSTM:
 
     def __init__(self, hidden_LSTM):
 
