@@ -55,19 +55,19 @@ class DatasetParser:
         self.__stack.append(self.__buffer.pop(0))
         return 'shift'
 
-    def __reduce_right(self):
+    def __reduce_right(self, label=None):
         self.__dependencies[int(self.__stack[-2][0])] -= 1
-        return 'reduce-right-' + self.__stack.pop(-1)[4]
+        return 'reduce-right-' + (self.__stack.pop(-1)[4] if label is None else label)
 
-    def __reduce_left(self):
+    def __reduce_left(self, label=None):
         self.__dependencies[int(self.__stack[-1][0])] -= 1
-        return 'reduce-left-' + self.__stack.pop(-2)[4]
+        return 'reduce-left-' + (self.__stack.pop(-2)[4] if label is None else label)
 
     def has_next(self):
         return bool(self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']
                     or self.__stack[-1] != ['0', '<ROOT/>', 'ROOT', '_', '_'])
 
-    def next(self, action=None):
+    def next(self, action=None, label=None):
         if action is None:
             if self.__stack[-1][3] == self.__stack[-2][0] and self.__dependencies[int(self.__stack[-1][0])] == 0:
                 return self.__reduce_right()
@@ -78,11 +78,11 @@ class DatasetParser:
         else:
             for a in action:
                 if a == 'reduce-right' and len(self.__stack) > 2:
-                    return self.__reduce_right()
+                    return self.__reduce_right(label[1])
                 elif a == 'reduce-right' and self.__buffer[0] == ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
-                    return self.__reduce_right()
+                    return self.__reduce_right(label[1])
                 elif a == 'reduce-left' and len(self.__stack) > 2:
-                    return self.__reduce_left()
+                    return self.__reduce_left(label[0])
                 elif a == 'shift' and self.__buffer[0] != ['-1', '<EMPTY/>', 'EMPTY', '_', '_']:
                     return self.__shift()
 
