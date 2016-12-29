@@ -18,6 +18,13 @@ class DatasetParser:
         self.__shift()
         self.__shift()
 
+    def sentence2couples(self):
+        return [[int(w[6]), i + 1, w[7]] for i, w in enumerate(self.__sentence[1:-1])]
+
+    def sentence2couples_parent(self):
+        sentence = [['0', '<ROOT/>', '_', 'ROOT', '_', '_', '0', '_', '_', '_']] + self.__sentence[1:-1]
+        return [[int(sentence[int(w[6])][6]), int(w[6]), i, w[7]] for i, w in enumerate(sentence)]
+
     def index2mask(self, index):
         mask = np.zeros(len(self.__sentence), dtype=bool)
         mask[index] = True
@@ -26,19 +33,12 @@ class DatasetParser:
     def decompose_word(self, word):
         splitted = re.split('[^A-Za-z]*', word)
 
-        # print(word)
         new_value = np.zeros((300,))
         for component in splitted:
             if component and component in self.__word2vec:
-                # print("---" + component)
                 new_value += self.__word2vec[component] / np.linalg.norm(self.__word2vec[component])
 
-        if np.linalg.norm(new_value) != 0.0:
-            new_value /= np.linalg.norm(new_value)
-        else:
-            new_value = np.ones((300,))
-
-        return new_value
+        return new_value / np.linalg.norm(new_value) if np.linalg.norm(new_value) != 0 else self.__word2vec['<UNK/>']
 
     def sentence2vec(self):
         vector_list = []
@@ -76,6 +76,9 @@ class DatasetParser:
             else:
                 return self.__shift()
         else:
+            if label is None:
+                label = (None, None)
+
             for a in action:
                 if a == 'reduce-right' and len(self.__stack) > 2:
                     return self.__reduce_right(label[1])
