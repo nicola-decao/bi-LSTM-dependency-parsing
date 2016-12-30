@@ -1,4 +1,4 @@
-# Bidirectional LSTM for dependeny parsing
+# Bidirectional LSTM for dependency parsing
 ## Disjoint predictions and complete classification accuracy in automated dependency parsing
 
 This work was developed as a project during the 2016/2017 Natural Language Processing 1 course for the master programe in Artificial Intelligence at University of Amsterdam. See ![report](https://github.com/nicola-decao/BILSTMDP/blob/master/report.pdf) for further details.
