@@ -23,9 +23,10 @@ To run the project simply run ```python main.py```.
 parsing with minimal features using bi-directional
 LSTM. CoRR, abs/1606.06406.
 
-[2] James Cross and Liang Huang. 2016. Incremental
-parsing with minimal features using bi-directional
-LSTM. CoRR, abs/1606.06406.
+[2] Eliyahu Kiperwasser and Yoav Goldberg. 2016. Sim-
+ple and accurate dependency parsing using bidi-
+rectional LSTM feature representations. CoRR,
+abs/1603.04351.
 
 [3] Jeffrey Pennington, Richard Socher, and Christo-
 pher D. Manning. Glove: Global vectors for word
